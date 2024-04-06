@@ -1,0 +1,640 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище Model" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="Итоговые_Работы">
+          <Key>
+            <PropertyRef Name="ID_Работы" />
+          </Key>
+          <Property Name="ID_Работы" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID_Учащегося" Type="int" Nullable="false" />
+          <Property Name="ID_Курса" Type="int" Nullable="false" />
+          <Property Name="Название" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Описание" Type="nvarchar(max)" />
+          <Property Name="Оценка" Type="int" />
+        </EntityType>
+        <EntityType Name="Курсы">
+          <Key>
+            <PropertyRef Name="ID_Курса" />
+          </Key>
+          <Property Name="ID_Курса" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Название" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Описание" Type="nvarchar(max)" />
+          <Property Name="Дата_начала" Type="date" />
+          <Property Name="Дата_окончания" Type="date" />
+        </EntityType>
+        <EntityType Name="Курсы_Учащихся">
+          <Key>
+            <PropertyRef Name="ID_Курса_Учащегося" />
+          </Key>
+          <Property Name="ID_Курса_Учащегося" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID_Учащегося" Type="int" Nullable="false" />
+          <Property Name="ID_Курса" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Пользователи_Курсы">
+          <Key>
+            <PropertyRef Name="ID_Пользователи_Курсы" />
+          </Key>
+          <Property Name="ID_Пользователи_Курсы" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID_Пользователя" Type="int" Nullable="false" />
+          <Property Name="ID_Курса" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Посещения">
+          <Key>
+            <PropertyRef Name="ID_Посещения" />
+          </Key>
+          <Property Name="ID_Посещения" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID_Учащегося" Type="int" Nullable="false" />
+          <Property Name="ID_Курса" Type="int" Nullable="false" />
+          <Property Name="Дата_посещения" Type="date" />
+          <Property Name="Статус" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Расписание">
+          <Key>
+            <PropertyRef Name="ID_Расписания" />
+          </Key>
+          <Property Name="ID_Расписания" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID_Курса" Type="int" Nullable="false" />
+          <Property Name="Дата_начала" Type="date" />
+          <Property Name="День_недели" Type="nvarchar" MaxLength="20" />
+          <Property Name="Время_начала" Type="time" Precision="7" />
+          <Property Name="Время_окончания" Type="time" Precision="7" />
+        </EntityType>
+        <EntityType Name="Регистрация">
+          <Key>
+            <PropertyRef Name="ID_Пользователя" />
+          </Key>
+          <Property Name="ID_Пользователя" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Логин" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Пароль" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Учащиеся">
+          <Key>
+            <PropertyRef Name="ID_Учащегося" />
+          </Key>
+          <Property Name="ID_Учащегося" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Имя" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Фамилия" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Отчество" Type="nvarchar" MaxLength="50" />
+          <Property Name="Дата_рождения" Type="date" />
+          <Property Name="Пол" Type="nvarchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Итоговые_Работы_Курсы">
+          <End Role="Курсы" Type="Self.Курсы" Multiplicity="1" />
+          <End Role="Итоговые_Работы" Type="Self.Итоговые_Работы" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Курсы">
+              <PropertyRef Name="ID_Курса" />
+            </Principal>
+            <Dependent Role="Итоговые_Работы">
+              <PropertyRef Name="ID_Курса" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Итоговые_Работы_Учащиеся">
+          <End Role="Учащиеся" Type="Self.Учащиеся" Multiplicity="1" />
+          <End Role="Итоговые_Работы" Type="Self.Итоговые_Работы" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Учащиеся">
+              <PropertyRef Name="ID_Учащегося" />
+            </Principal>
+            <Dependent Role="Итоговые_Работы">
+              <PropertyRef Name="ID_Учащегося" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Курсы_Учащихся_Курсы">
+          <End Role="Курсы" Type="Self.Курсы" Multiplicity="1" />
+          <End Role="Курсы_Учащихся" Type="Self.Курсы_Учащихся" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Курсы">
+              <PropertyRef Name="ID_Курса" />
+            </Principal>
+            <Dependent Role="Курсы_Учащихся">
+              <PropertyRef Name="ID_Курса" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Курсы_Учащихся_Учащиеся">
+          <End Role="Учащиеся" Type="Self.Учащиеся" Multiplicity="1" />
+          <End Role="Курсы_Учащихся" Type="Self.Курсы_Учащихся" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Учащиеся">
+              <PropertyRef Name="ID_Учащегося" />
+            </Principal>
+            <Dependent Role="Курсы_Учащихся">
+              <PropertyRef Name="ID_Учащегося" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Пользователи_Курсы_Курсы">
+          <End Role="Курсы" Type="Self.Курсы" Multiplicity="1" />
+          <End Role="Пользователи_Курсы" Type="Self.Пользователи_Курсы" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Курсы">
+              <PropertyRef Name="ID_Курса" />
+            </Principal>
+            <Dependent Role="Пользователи_Курсы">
+              <PropertyRef Name="ID_Курса" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Пользователи_Курсы_Регистрация">
+          <End Role="Регистрация" Type="Self.Регистрация" Multiplicity="1" />
+          <End Role="Пользователи_Курсы" Type="Self.Пользователи_Курсы" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Регистрация">
+              <PropertyRef Name="ID_Пользователя" />
+            </Principal>
+            <Dependent Role="Пользователи_Курсы">
+              <PropertyRef Name="ID_Пользователя" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Посещения_Курсы">
+          <End Role="Курсы" Type="Self.Курсы" Multiplicity="1" />
+          <End Role="Посещения" Type="Self.Посещения" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Курсы">
+              <PropertyRef Name="ID_Курса" />
+            </Principal>
+            <Dependent Role="Посещения">
+              <PropertyRef Name="ID_Курса" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Посещения_Учащиеся">
+          <End Role="Учащиеся" Type="Self.Учащиеся" Multiplicity="1" />
+          <End Role="Посещения" Type="Self.Посещения" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Учащиеся">
+              <PropertyRef Name="ID_Учащегося" />
+            </Principal>
+            <Dependent Role="Посещения">
+              <PropertyRef Name="ID_Учащегося" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Расписание_Курсы">
+          <End Role="Курсы" Type="Self.Курсы" Multiplicity="1" />
+          <End Role="Расписание" Type="Self.Расписание" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Курсы">
+              <PropertyRef Name="ID_Курса" />
+            </Principal>
+            <Dependent Role="Расписание">
+              <PropertyRef Name="ID_Курса" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище ModelContainer">
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Итоговые_Работы" EntityType="Self.Итоговые_Работы" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Курсы" EntityType="Self.Курсы" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Курсы_Учащихся" EntityType="Self.Курсы_Учащихся" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Пользователи_Курсы" EntityType="Self.Пользователи_Курсы" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Посещения" EntityType="Self.Посещения" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Расписание" EntityType="Self.Расписание" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Регистрация" EntityType="Self.Регистрация" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Учащиеся" EntityType="Self.Учащиеся" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Итоговые_Работы_Курсы" Association="Self.FK_Итоговые_Работы_Курсы">
+            <End Role="Курсы" EntitySet="Курсы" />
+            <End Role="Итоговые_Работы" EntitySet="Итоговые_Работы" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Итоговые_Работы_Учащиеся" Association="Self.FK_Итоговые_Работы_Учащиеся">
+            <End Role="Учащиеся" EntitySet="Учащиеся" />
+            <End Role="Итоговые_Работы" EntitySet="Итоговые_Работы" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Курсы_Учащихся_Курсы" Association="Self.FK_Курсы_Учащихся_Курсы">
+            <End Role="Курсы" EntitySet="Курсы" />
+            <End Role="Курсы_Учащихся" EntitySet="Курсы_Учащихся" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Курсы_Учащихся_Учащиеся" Association="Self.FK_Курсы_Учащихся_Учащиеся">
+            <End Role="Учащиеся" EntitySet="Учащиеся" />
+            <End Role="Курсы_Учащихся" EntitySet="Курсы_Учащихся" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Пользователи_Курсы_Курсы" Association="Self.FK_Пользователи_Курсы_Курсы">
+            <End Role="Курсы" EntitySet="Курсы" />
+            <End Role="Пользователи_Курсы" EntitySet="Пользователи_Курсы" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Пользователи_Курсы_Регистрация" Association="Self.FK_Пользователи_Курсы_Регистрация">
+            <End Role="Регистрация" EntitySet="Регистрация" />
+            <End Role="Пользователи_Курсы" EntitySet="Пользователи_Курсы" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Посещения_Курсы" Association="Self.FK_Посещения_Курсы">
+            <End Role="Курсы" EntitySet="Курсы" />
+            <End Role="Посещения" EntitySet="Посещения" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Посещения_Учащиеся" Association="Self.FK_Посещения_Учащиеся">
+            <End Role="Учащиеся" EntitySet="Учащиеся" />
+            <End Role="Посещения" EntitySet="Посещения" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Расписание_Курсы" Association="Self.FK_Расписание_Курсы">
+            <End Role="Курсы" EntitySet="Курсы" />
+            <End Role="Расписание" EntitySet="Расписание" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Итоговые_Работы">
+          <Key>
+            <PropertyRef Name="ID_Работы" />
+          </Key>
+          <Property Name="ID_Работы" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_Учащегося" Type="Int32" Nullable="false" />
+          <Property Name="ID_Курса" Type="Int32" Nullable="false" />
+          <Property Name="Название" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Описание" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Оценка" Type="Int32" />
+          <NavigationProperty Name="Курсы" Relationship="Self.FK_Итоговые_Работы_Курсы" FromRole="Итоговые_Работы" ToRole="Курсы" />
+          <NavigationProperty Name="Учащиеся" Relationship="Self.FK_Итоговые_Работы_Учащиеся" FromRole="Итоговые_Работы" ToRole="Учащиеся" />
+        </EntityType>
+        <EntityType Name="Курсы">
+          <Key>
+            <PropertyRef Name="ID_Курса" />
+          </Key>
+          <Property Name="ID_Курса" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Название" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Описание" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Дата_начала" Type="DateTime" Precision="0" />
+          <Property Name="Дата_окончания" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="Итоговые_Работы" Relationship="Self.FK_Итоговые_Работы_Курсы" FromRole="Курсы" ToRole="Итоговые_Работы" />
+          <NavigationProperty Name="Курсы_Учащихся" Relationship="Self.FK_Курсы_Учащихся_Курсы" FromRole="Курсы" ToRole="Курсы_Учащихся" />
+          <NavigationProperty Name="Пользователи_Курсы" Relationship="Self.FK_Пользователи_Курсы_Курсы" FromRole="Курсы" ToRole="Пользователи_Курсы" />
+          <NavigationProperty Name="Посещения" Relationship="Self.FK_Посещения_Курсы" FromRole="Курсы" ToRole="Посещения" />
+          <NavigationProperty Name="Расписание" Relationship="Self.FK_Расписание_Курсы" FromRole="Курсы" ToRole="Расписание" />
+        </EntityType>
+        <EntityType Name="Курсы_Учащихся">
+          <Key>
+            <PropertyRef Name="ID_Курса_Учащегося" />
+          </Key>
+          <Property Name="ID_Курса_Учащегося" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_Учащегося" Type="Int32" Nullable="false" />
+          <Property Name="ID_Курса" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Курсы" Relationship="Self.FK_Курсы_Учащихся_Курсы" FromRole="Курсы_Учащихся" ToRole="Курсы" />
+          <NavigationProperty Name="Учащиеся" Relationship="Self.FK_Курсы_Учащихся_Учащиеся" FromRole="Курсы_Учащихся" ToRole="Учащиеся" />
+        </EntityType>
+        <EntityType Name="Пользователи_Курсы">
+          <Key>
+            <PropertyRef Name="ID_Пользователи_Курсы" />
+          </Key>
+          <Property Name="ID_Пользователи_Курсы" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_Пользователя" Type="Int32" Nullable="false" />
+          <Property Name="ID_Курса" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Курсы" Relationship="Self.FK_Пользователи_Курсы_Курсы" FromRole="Пользователи_Курсы" ToRole="Курсы" />
+          <NavigationProperty Name="Регистрация" Relationship="Self.FK_Пользователи_Курсы_Регистрация" FromRole="Пользователи_Курсы" ToRole="Регистрация" />
+        </EntityType>
+        <EntityType Name="Посещения">
+          <Key>
+            <PropertyRef Name="ID_Посещения" />
+          </Key>
+          <Property Name="ID_Посещения" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_Учащегося" Type="Int32" Nullable="false" />
+          <Property Name="ID_Курса" Type="Int32" Nullable="false" />
+          <Property Name="Дата_посещения" Type="DateTime" Precision="0" />
+          <Property Name="Статус" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Курсы" Relationship="Self.FK_Посещения_Курсы" FromRole="Посещения" ToRole="Курсы" />
+          <NavigationProperty Name="Учащиеся" Relationship="Self.FK_Посещения_Учащиеся" FromRole="Посещения" ToRole="Учащиеся" />
+        </EntityType>
+        <EntityType Name="Расписание">
+          <Key>
+            <PropertyRef Name="ID_Расписания" />
+          </Key>
+          <Property Name="ID_Расписания" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_Курса" Type="Int32" Nullable="false" />
+          <Property Name="Дата_начала" Type="DateTime" Precision="0" />
+          <Property Name="День_недели" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Время_начала" Type="Time" Precision="7" />
+          <Property Name="Время_окончания" Type="Time" Precision="7" />
+          <NavigationProperty Name="Курсы" Relationship="Self.FK_Расписание_Курсы" FromRole="Расписание" ToRole="Курсы" />
+        </EntityType>
+        <EntityType Name="Регистрация">
+          <Key>
+            <PropertyRef Name="ID_Пользователя" />
+          </Key>
+          <Property Name="ID_Пользователя" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Логин" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Пароль" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Пользователи_Курсы" Relationship="Self.FK_Пользователи_Курсы_Регистрация" FromRole="Регистрация" ToRole="Пользователи_Курсы" />
+        </EntityType>
+        <EntityType Name="Учащиеся">
+          <Key>
+            <PropertyRef Name="ID_Учащегося" />
+          </Key>
+          <Property Name="ID_Учащегося" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Имя" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Фамилия" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Отчество" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Дата_рождения" Type="DateTime" Precision="0" />
+          <Property Name="Пол" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Итоговые_Работы" Relationship="Self.FK_Итоговые_Работы_Учащиеся" FromRole="Учащиеся" ToRole="Итоговые_Работы" />
+          <NavigationProperty Name="Курсы_Учащихся" Relationship="Self.FK_Курсы_Учащихся_Учащиеся" FromRole="Учащиеся" ToRole="Курсы_Учащихся" />
+          <NavigationProperty Name="Посещения" Relationship="Self.FK_Посещения_Учащиеся" FromRole="Учащиеся" ToRole="Посещения" />
+        </EntityType>
+        <Association Name="FK_Итоговые_Работы_Курсы">
+          <End Role="Курсы" Type="Self.Курсы" Multiplicity="1" />
+          <End Role="Итоговые_Работы" Type="Self.Итоговые_Работы" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Курсы">
+              <PropertyRef Name="ID_Курса" />
+            </Principal>
+            <Dependent Role="Итоговые_Работы">
+              <PropertyRef Name="ID_Курса" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Итоговые_Работы_Учащиеся">
+          <End Role="Учащиеся" Type="Self.Учащиеся" Multiplicity="1" />
+          <End Role="Итоговые_Работы" Type="Self.Итоговые_Работы" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Учащиеся">
+              <PropertyRef Name="ID_Учащегося" />
+            </Principal>
+            <Dependent Role="Итоговые_Работы">
+              <PropertyRef Name="ID_Учащегося" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Курсы_Учащихся_Курсы">
+          <End Role="Курсы" Type="Self.Курсы" Multiplicity="1" />
+          <End Role="Курсы_Учащихся" Type="Self.Курсы_Учащихся" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Курсы">
+              <PropertyRef Name="ID_Курса" />
+            </Principal>
+            <Dependent Role="Курсы_Учащихся">
+              <PropertyRef Name="ID_Курса" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Пользователи_Курсы_Курсы">
+          <End Role="Курсы" Type="Self.Курсы" Multiplicity="1" />
+          <End Role="Пользователи_Курсы" Type="Self.Пользователи_Курсы" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Курсы">
+              <PropertyRef Name="ID_Курса" />
+            </Principal>
+            <Dependent Role="Пользователи_Курсы">
+              <PropertyRef Name="ID_Курса" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Посещения_Курсы">
+          <End Role="Курсы" Type="Self.Курсы" Multiplicity="1" />
+          <End Role="Посещения" Type="Self.Посещения" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Курсы">
+              <PropertyRef Name="ID_Курса" />
+            </Principal>
+            <Dependent Role="Посещения">
+              <PropertyRef Name="ID_Курса" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Расписание_Курсы">
+          <End Role="Курсы" Type="Self.Курсы" Multiplicity="1" />
+          <End Role="Расписание" Type="Self.Расписание" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Курсы">
+              <PropertyRef Name="ID_Курса" />
+            </Principal>
+            <Dependent Role="Расписание">
+              <PropertyRef Name="ID_Курса" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Курсы_Учащихся_Учащиеся">
+          <End Role="Учащиеся" Type="Self.Учащиеся" Multiplicity="1" />
+          <End Role="Курсы_Учащихся" Type="Self.Курсы_Учащихся" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Учащиеся">
+              <PropertyRef Name="ID_Учащегося" />
+            </Principal>
+            <Dependent Role="Курсы_Учащихся">
+              <PropertyRef Name="ID_Учащегося" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Пользователи_Курсы_Регистрация">
+          <End Role="Регистрация" Type="Self.Регистрация" Multiplicity="1" />
+          <End Role="Пользователи_Курсы" Type="Self.Пользователи_Курсы" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Регистрация">
+              <PropertyRef Name="ID_Пользователя" />
+            </Principal>
+            <Dependent Role="Пользователи_Курсы">
+              <PropertyRef Name="ID_Пользователя" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Посещения_Учащиеся">
+          <End Role="Учащиеся" Type="Self.Учащиеся" Multiplicity="1" />
+          <End Role="Посещения" Type="Self.Посещения" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Учащиеся">
+              <PropertyRef Name="ID_Учащегося" />
+            </Principal>
+            <Dependent Role="Посещения">
+              <PropertyRef Name="ID_Учащегося" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <EntitySet Name="Итоговые_Работы" EntityType="Self.Итоговые_Работы" />
+          <EntitySet Name="Курсы" EntityType="Self.Курсы" />
+          <EntitySet Name="Курсы_Учащихся" EntityType="Self.Курсы_Учащихся" />
+          <EntitySet Name="Пользователи_Курсы" EntityType="Self.Пользователи_Курсы" />
+          <EntitySet Name="Посещения" EntityType="Self.Посещения" />
+          <EntitySet Name="Расписание" EntityType="Self.Расписание" />
+          <EntitySet Name="Регистрация" EntityType="Self.Регистрация" />
+          <EntitySet Name="Учащиеся" EntityType="Self.Учащиеся" />
+          <AssociationSet Name="FK_Итоговые_Работы_Курсы" Association="Self.FK_Итоговые_Работы_Курсы">
+            <End Role="Курсы" EntitySet="Курсы" />
+            <End Role="Итоговые_Работы" EntitySet="Итоговые_Работы" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Итоговые_Работы_Учащиеся" Association="Self.FK_Итоговые_Работы_Учащиеся">
+            <End Role="Учащиеся" EntitySet="Учащиеся" />
+            <End Role="Итоговые_Работы" EntitySet="Итоговые_Работы" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Курсы_Учащихся_Курсы" Association="Self.FK_Курсы_Учащихся_Курсы">
+            <End Role="Курсы" EntitySet="Курсы" />
+            <End Role="Курсы_Учащихся" EntitySet="Курсы_Учащихся" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Пользователи_Курсы_Курсы" Association="Self.FK_Пользователи_Курсы_Курсы">
+            <End Role="Курсы" EntitySet="Курсы" />
+            <End Role="Пользователи_Курсы" EntitySet="Пользователи_Курсы" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Посещения_Курсы" Association="Self.FK_Посещения_Курсы">
+            <End Role="Курсы" EntitySet="Курсы" />
+            <End Role="Посещения" EntitySet="Посещения" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Расписание_Курсы" Association="Self.FK_Расписание_Курсы">
+            <End Role="Курсы" EntitySet="Курсы" />
+            <End Role="Расписание" EntitySet="Расписание" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Курсы_Учащихся_Учащиеся" Association="Self.FK_Курсы_Учащихся_Учащиеся">
+            <End Role="Учащиеся" EntitySet="Учащиеся" />
+            <End Role="Курсы_Учащихся" EntitySet="Курсы_Учащихся" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Пользователи_Курсы_Регистрация" Association="Self.FK_Пользователи_Курсы_Регистрация">
+            <End Role="Регистрация" EntitySet="Регистрация" />
+            <End Role="Пользователи_Курсы" EntitySet="Пользователи_Курсы" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Посещения_Учащиеся" Association="Self.FK_Посещения_Учащиеся">
+            <End Role="Учащиеся" EntitySet="Учащиеся" />
+            <End Role="Посещения" EntitySet="Посещения" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище ModelContainer" CdmEntityContainer="Entities">
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="Model.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Итоговые_Работы">
+            <EntityTypeMapping TypeName="Model.Итоговые_Работы">
+              <MappingFragment StoreEntitySet="Итоговые_Работы">
+                <ScalarProperty Name="ID_Работы" ColumnName="ID_Работы" />
+                <ScalarProperty Name="ID_Учащегося" ColumnName="ID_Учащегося" />
+                <ScalarProperty Name="ID_Курса" ColumnName="ID_Курса" />
+                <ScalarProperty Name="Название" ColumnName="Название" />
+                <ScalarProperty Name="Описание" ColumnName="Описание" />
+                <ScalarProperty Name="Оценка" ColumnName="Оценка" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Курсы">
+            <EntityTypeMapping TypeName="Model.Курсы">
+              <MappingFragment StoreEntitySet="Курсы">
+                <ScalarProperty Name="ID_Курса" ColumnName="ID_Курса" />
+                <ScalarProperty Name="Название" ColumnName="Название" />
+                <ScalarProperty Name="Описание" ColumnName="Описание" />
+                <ScalarProperty Name="Дата_начала" ColumnName="Дата_начала" />
+                <ScalarProperty Name="Дата_окончания" ColumnName="Дата_окончания" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Курсы_Учащихся">
+            <EntityTypeMapping TypeName="Model.Курсы_Учащихся">
+              <MappingFragment StoreEntitySet="Курсы_Учащихся">
+                <ScalarProperty Name="ID_Курса_Учащегося" ColumnName="ID_Курса_Учащегося" />
+                <ScalarProperty Name="ID_Учащегося" ColumnName="ID_Учащегося" />
+                <ScalarProperty Name="ID_Курса" ColumnName="ID_Курса" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Пользователи_Курсы">
+            <EntityTypeMapping TypeName="Model.Пользователи_Курсы">
+              <MappingFragment StoreEntitySet="Пользователи_Курсы">
+                <ScalarProperty Name="ID_Пользователи_Курсы" ColumnName="ID_Пользователи_Курсы" />
+                <ScalarProperty Name="ID_Пользователя" ColumnName="ID_Пользователя" />
+                <ScalarProperty Name="ID_Курса" ColumnName="ID_Курса" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Посещения">
+            <EntityTypeMapping TypeName="Model.Посещения">
+              <MappingFragment StoreEntitySet="Посещения">
+                <ScalarProperty Name="ID_Посещения" ColumnName="ID_Посещения" />
+                <ScalarProperty Name="ID_Учащегося" ColumnName="ID_Учащегося" />
+                <ScalarProperty Name="ID_Курса" ColumnName="ID_Курса" />
+                <ScalarProperty Name="Дата_посещения" ColumnName="Дата_посещения" />
+                <ScalarProperty Name="Статус" ColumnName="Статус" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Расписание">
+            <EntityTypeMapping TypeName="Model.Расписание">
+              <MappingFragment StoreEntitySet="Расписание">
+                <ScalarProperty Name="ID_Расписания" ColumnName="ID_Расписания" />
+                <ScalarProperty Name="ID_Курса" ColumnName="ID_Курса" />
+                <ScalarProperty Name="Дата_начала" ColumnName="Дата_начала" />
+                <ScalarProperty Name="День_недели" ColumnName="День_недели" />
+                <ScalarProperty Name="Время_начала" ColumnName="Время_начала" />
+                <ScalarProperty Name="Время_окончания" ColumnName="Время_окончания" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Регистрация">
+            <EntityTypeMapping TypeName="Model.Регистрация">
+              <MappingFragment StoreEntitySet="Регистрация">
+                <ScalarProperty Name="ID_Пользователя" ColumnName="ID_Пользователя" />
+                <ScalarProperty Name="Логин" ColumnName="Логин" />
+                <ScalarProperty Name="Пароль" ColumnName="Пароль" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Учащиеся">
+            <EntityTypeMapping TypeName="Model.Учащиеся">
+              <MappingFragment StoreEntitySet="Учащиеся">
+                <ScalarProperty Name="ID_Учащегося" ColumnName="ID_Учащегося" />
+                <ScalarProperty Name="Имя" ColumnName="Имя" />
+                <ScalarProperty Name="Фамилия" ColumnName="Фамилия" />
+                <ScalarProperty Name="Отчество" ColumnName="Отчество" />
+                <ScalarProperty Name="Дата_рождения" ColumnName="Дата_рождения" />
+                <ScalarProperty Name="Пол" ColumnName="Пол" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

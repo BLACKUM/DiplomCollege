@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="bf59a5ca754a4b68a921682c6a050401" Name="Diagram1">
+        <EntityTypeShape EntityType="Model.sysdiagram" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Итоговые_Работы" Width="1.5" PointX="3" PointY="7.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Курсы" Width="1.5" PointX="0.75" PointY="7.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Курсы_Учащихся" Width="1.5" PointX="3" PointY="4.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Пользователи_Курсы" Width="1.5" PointX="3" PointY="10.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Посещения" Width="1.5" PointX="6" PointY="7.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Расписание" Width="1.5" PointX="3" PointY="19.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Регистрация" Width="1.5" PointX="0.75" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Учащиеся" Width="1.5" PointX="0.75" PointY="3.25" IsExpanded="true" />
+        <AssociationConnector Association="Model.FK_Итоговые_Работы_Курсы" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_Итоговые_Работы_Учащиеся" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_Курсы_Учащихся_Курсы" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_Пользователи_Курсы_Курсы" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_Посещения_Курсы" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_Расписание_Курсы" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_Курсы_Учащихся_Учащиеся" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_Пользователи_Курсы_Регистрация" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_Посещения_Учащиеся" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

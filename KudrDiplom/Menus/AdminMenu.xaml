@@ -1,0 +1,352 @@
+﻿<Window x:Class="KudrDiplom.Menus.AdminMenu"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:KudrDiplom.Menus"
+        Background="Transparent"
+        mc:Ignorable="d"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        Title="Администратор" Height="720" Width="1280" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" AllowsTransparency="True" WindowStyle="None" Cursor="Arrow" Loaded="WindowLoaded">
+    <Window.Resources>
+        <Storyboard x:Key="SeparatorAnimation">
+            <DoubleAnimation Storyboard.TargetName="Separator" Storyboard.TargetProperty="Width" From="0" To="2000" Duration="0:0:1"/>
+        </Storyboard>
+    </Window.Resources>
+    <Border BorderBrush="{StaticResource Color2}" Background="{StaticResource Color1}" BorderThickness="3" CornerRadius="15" Width="1280" Height="720" VerticalAlignment="Top" Margin="0,0,0,0" Cursor="Arrow">
+        <Grid>
+            <Rectangle Cursor="SizeAll" MouseDown="Drag_MouseDown" Fill="Transparent" Stroke="Transparent" HorizontalAlignment="Left" Height="50" VerticalAlignment="Top" Width="1175" Panel.ZIndex="-1"/>
+            <Button Style="{StaticResource MaterialDesignFlatButton}" x:Name="Exit" Content="X" HorizontalAlignment="Left" Margin="1222,7,0,0" VerticalAlignment="Top" Width="42" Height="26" BorderBrush="#FF1450A0" FontWeight="Bold" Cursor="Hand" Foreground="{StaticResource Color3}" Click="ExitClick" />
+            <Button Style="{StaticResource MaterialDesignFlatButton}" x:Name="Collapse" Content="—" HorizontalAlignment="Left" Margin="1175,7,0,0" VerticalAlignment="Top" Width="42" Height="26" BorderBrush="#FF1450A0" FontWeight="Bold" Cursor="Hand" Foreground="{StaticResource Color3}" Click="CollapseClick" />
+            <TabControl Margin="0,50,0,0" Style="{StaticResource MaterialDesignUniformTabControl}">
+                <TabItem Header="Курсы" Background="{StaticResource Color3}">
+                    <Grid Background="{StaticResource Color1}" Margin="0,0,0,17" Width="1272">
+                        <TextBlock x:Name="SearchLabelKursi" Text="Поиск:" VerticalAlignment="Top" Margin="20,523,1197,0" Height="24" RenderTransformOrigin="0.464,0.941" Background="{DynamicResource Color1}" Foreground="{DynamicResource Color3}" FontSize="16"/>
+                        <TextBox x:Name="SearchTextBoxKursi" Width="200" VerticalAlignment="Top" TextChanged="SearchTextBoxTextChangedKursi" Margin="80,523,992,0" Background="{DynamicResource Color2}"/>
+                        <Button x:Name="PowerSearchKursi" Content="Продвинутый поиск" HorizontalAlignment="Left" Margin="21,551,0,0" VerticalAlignment="Top" Height="27" Width="258" Style="{StaticResource ButtonStyle}" FontSize="14" Click="PowerSearchKursiClick"/>
+                        <Button x:Name="EditToKursi" Content="Изменить" HorizontalAlignment="Left" Margin="774,523,0,0" VerticalAlignment="Top"  Height="55" Width="240" Click="EditToClickKursi" Style="{StaticResource ButtonStyle}"/>
+                        <Button x:Name="CancelKursi" Content="Отменить" HorizontalAlignment="Left" Margin="1019,523,0,0" VerticalAlignment="Top"  Height="55" Width="240" Click="CancelClickKursi" Style="{StaticResource ButtonStyle}" Visibility="Hidden"/>
+                        <Button x:Name="AddToKursi" Content="Добавить" HorizontalAlignment="Left" Margin="529,523,0,0" VerticalAlignment="Top"  Height="55" Width="240" Click="AddToClickKursi" Style="{StaticResource ButtonStyle}"/>
+                        <Button x:Name="DelToKursi" Content="Удалить" HorizontalAlignment="Left" Margin="1019,523,0,0" VerticalAlignment="Top" Height="55" Width="240" Click="DeleteClickKursi" Style="{StaticResource ButtonStyle}"/>
+                        <Button x:Name="PrintKursi" Content="Экспорт в Excel" HorizontalAlignment="Left" Margin="284,523,0,0" VerticalAlignment="Top" Height="55" Width="240" Click="PrintClickKursi" Style="{StaticResource ButtonStyle}"/>
+                        <DataGrid x:Name="курсыDataGridKursi" AutoGenerateColumns="False" EnableRowVirtualization="True" IsReadOnly="True" RowDetailsVisibilityMode="VisibleWhenSelected" Margin="10,10,10,84" ColumnWidth="Auto" BorderThickness="3" Background="{StaticResource Color2}" SelectionMode="Extended" SelectionUnit="FullRow">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn x:Name="названиеColumnKursi" Binding="{Binding Название}" Header="Название" Width="auto"/>
+                                <DataGridTextColumn x:Name="описаниеColumnKursi" Binding="{Binding Описание}" Header="Описание" Width="auto"/>
+                                <DataGridTemplateColumn x:Name="датаначалаColumnKursi" Header="Дата начала" Width="auto">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <DatePicker SelectedDate="{Binding Дата_начала, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" IsHitTestVisible="False"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn x:Name="датаокончанияColumnKursi" Header="Дата окончания" Width="auto">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <DatePicker SelectedDate="{Binding Дата_окончания, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" IsHitTestVisible="False"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <StackPanel Visibility="Hidden" x:Name="InfoEditPanelKursi">
+                            <TextBox x:Name="NameKursKursi" Text="{Binding Название, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Height="25" Margin="10,20,1078,0" VerticalAlignment="Top" BorderBrush="{DynamicResource MaterialDesignBody}" Foreground="{DynamicResource MaterialDesignBody}" Background="{DynamicResource Color2}"/>
+                            <TextBox x:Name="OpisanieKursi" Text="{Binding Описание, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Height="25" Margin="10,20,1078,0" VerticalAlignment="Top" BorderBrush="{DynamicResource MaterialDesignBody}" Foreground="{DynamicResource MaterialDesignBody}" Background="{DynamicResource Color2}"/>
+                            <DatePicker x:Name="DatestartKursi" SelectedDateChanged="DatePickerStartSelectedDateChanged" SelectedDate="{Binding Дата_начала, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Margin="10,20,1078,0" VerticalAlignment="Top" Height="25" BorderBrush="{DynamicResource MaterialDesignBody}" Foreground="{DynamicResource MaterialDesignBody}" Background="{DynamicResource Color2}"/>
+                            <DatePicker x:Name="DateendKursi" SelectedDateChanged="DatePickerEndSelectedDateChanged" SelectedDate="{Binding Дата_окончания, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Margin="10,20,1078,0" VerticalAlignment="Top" Height="25" BorderBrush="{DynamicResource MaterialDesignBody}" Foreground="{DynamicResource MaterialDesignBody}" Background="{DynamicResource Color2}"/>
+                            <Button Visibility="Hidden" x:Name="AddKursi" Content="Добавить" HorizontalAlignment="Left" Margin="10,20,0,0" VerticalAlignment="Top"  Height="56" Width="184" Click="AddClickKursi" Style="{StaticResource ButtonStyle}"/>
+                            <Button Visibility="Hidden" x:Name="SearchKursi" Content="Поиск" HorizontalAlignment="Left" Margin="10,-56,0,0" VerticalAlignment="Top"  Height="56" Width="184" Click="SearchClickKursi" Style="{StaticResource ButtonStyle}"/>
+                            <Button Visibility="Hidden" x:Name="EditKursi" Content="Изменить" HorizontalAlignment="Left" Margin="10,-56,0,0" VerticalAlignment="Top"  Height="56" Width="184" Click="EditClickKursi" Style="{StaticResource ButtonStyle}"/>
+                            <Button Visibility="Hidden" x:Name="ClearKursi" Content="Сбросить" HorizontalAlignment="Left" Margin="10,20,0,0" VerticalAlignment="Top"  Height="56" Width="184" Click="ClearClickKursi" Style="{StaticResource ButtonStyle}" Cursor="Hand"/>
+                        </StackPanel>
+                        <StackPanel Visibility="Hidden" x:Name="InfoEditLabelKursi">
+                            <Label Content="Название курса" HorizontalAlignment="Left" Margin="210,20,0,0" VerticalAlignment="Top" Foreground="{StaticResource SeconColor1}"/>
+                            <Label Content="Описание курса" HorizontalAlignment="Left" Margin="210,20,0,0" VerticalAlignment="Top" Foreground="{StaticResource SeconColor1}"/>
+                            <Label Content="Дата начала курса" HorizontalAlignment="Left" Margin="210,20,0,0" VerticalAlignment="Top" Foreground="{StaticResource SeconColor1}"/>
+                            <Label Content="Дата окончания курса" HorizontalAlignment="Left" Margin="210,20,0,0" VerticalAlignment="Top" Foreground="{StaticResource SeconColor1}"/>
+                        </StackPanel>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Учащиеся" Background="{StaticResource Color3}">
+                    <Grid Background="{StaticResource Color1}" Margin="0,0,0,17" Width="1272">
+                        <TextBlock x:Name="SearchLabelUch" Text="Поиск:" VerticalAlignment="Top" Margin="20,523,1197,0" Height="24" RenderTransformOrigin="0.464,0.941" Background="{DynamicResource Color1}" Foreground="{DynamicResource Color3}" FontSize="16"/>
+                        <TextBox x:Name="SearchTextBoxUch" Width="200" VerticalAlignment="Top" TextChanged="SearchTextBoxTextChangedUch" Margin="80,523,992,0" Background="{DynamicResource Color2}"/>
+                        <Button x:Name="PowerSearchUch" Content="Продвинутый поиск" HorizontalAlignment="Left" Margin="21,551,0,0" VerticalAlignment="Top" Height="27" Width="258" Style="{StaticResource ButtonStyle}" FontSize="14" Click="PowerSearchUchClick"/>
+                        <Button x:Name="EditToUch" Content="Изменить" HorizontalAlignment="Left" Margin="774,523,0,0" VerticalAlignment="Top"  Height="55" Width="240" Click="EditToClickUch" Style="{StaticResource ButtonStyle}"/>
+                        <Button x:Name="CancelUch" Content="Отменить" HorizontalAlignment="Left" Margin="1019,523,0,0" VerticalAlignment="Top"  Height="55" Width="240" Click="CancelClickUch" Style="{StaticResource ButtonStyle}" Visibility="Hidden"/>
+                        <Button x:Name="AddToUch" Content="Добавить" HorizontalAlignment="Left" Margin="529,523,0,0" VerticalAlignment="Top"  Height="55" Width="240" Click="AddToClickUch" Style="{StaticResource ButtonStyle}"/>
+                        <Button x:Name="DelToUch" Content="Удалить" HorizontalAlignment="Left" Margin="1019,523,0,0" VerticalAlignment="Top" Height="55" Width="240" Click="DeleteClickUch" Style="{StaticResource ButtonStyle}"/>
+                        <Button x:Name="PrintUch" Content="Экспорт в Excel" HorizontalAlignment="Left" Margin="284,523,0,0" VerticalAlignment="Top" Height="55" Width="240" Click="PrintClickUch" Style="{StaticResource ButtonStyle}"/>
+                        <DataGrid x:Name="учащиесяDataGridUch" AutoGenerateColumns="False" EnableRowVirtualization="True" IsReadOnly="True" RowDetailsVisibilityMode="VisibleWhenSelected" Margin="10,10,10,84" ColumnWidth="Auto" BorderThickness="3" Background="{StaticResource Color2}" SelectionMode="Extended" SelectionUnit="FullRow">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn x:Name="имяColumnUch" Binding="{Binding Имя}" Header="Имя" Width="auto"/>
+                                <DataGridTextColumn x:Name="фамилияColumnUch" Binding="{Binding Фамилия}" Header="Фамилия" Width="auto"/>
+                                <DataGridTextColumn x:Name="отчествоColumnUch" Binding="{Binding Отчество}" Header="Отчество" Width="auto"/>
+                                <DataGridTemplateColumn x:Name="датарожденияColumnUch" Header="Дата рождения" Width="auto">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <DatePicker SelectedDate="{Binding Дата_рождения, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" IsHitTestVisible="False"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTextColumn x:Name="полColumnUch" Binding="{Binding Пол}" Header="Пол" Width="auto"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <StackPanel Visibility="Hidden" x:Name="InfoEditPanelUch">
+                            <TextBox x:Name="NameUch" Text="{Binding Имя, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Height="25" Margin="10,20,1078,0" VerticalAlignment="Top" BorderBrush="{DynamicResource MaterialDesignBody}" Foreground="{DynamicResource MaterialDesignBody}" Background="{DynamicResource Color2}"/>
+                            <TextBox x:Name="SurnameUch" Text="{Binding Фамилия, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Height="25" Margin="10,20,1078,0" VerticalAlignment="Top" BorderBrush="{DynamicResource MaterialDesignBody}" Foreground="{DynamicResource MaterialDesignBody}" Background="{DynamicResource Color2}"/>
+                            <TextBox x:Name="OtchUch" Text="{Binding Отчество, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Height="25" Margin="10,20,1078,0" VerticalAlignment="Top" BorderBrush="{DynamicResource MaterialDesignBody}" Foreground="{DynamicResource MaterialDesignBody}" Background="{DynamicResource Color2}"/>
+                            <DatePicker x:Name="DateOfBirthUch" SelectedDate="{Binding Дата_начала, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Margin="10,20,1078,0" VerticalAlignment="Top" Height="25" BorderBrush="{DynamicResource MaterialDesignBody}" Foreground="{DynamicResource MaterialDesignBody}" Background="{DynamicResource Color2}"/>
+                            <ComboBox x:Name="GenderUch" Height="25" Margin="10,20,1078,0" VerticalAlignment="Top" BorderBrush="{DynamicResource MaterialDesignBody}" SelectedValue="{Binding Пол, Mode=TwoWay}" Background="{DynamicResource Color2}">
+                                <ComboBoxItem>мужчина</ComboBoxItem>
+                                <ComboBoxItem>женщина</ComboBoxItem>
+                            </ComboBox>
+                            <Button Visibility="Hidden" x:Name="AddUch" Content="Добавить" HorizontalAlignment="Left" Margin="10,20,0,0" VerticalAlignment="Top"  Height="56" Width="184" Click="AddClickUch" Style="{StaticResource ButtonStyle}"/>
+                            <Button Visibility="Hidden" x:Name="SearchUch" Content="Поиск" HorizontalAlignment="Left" Margin="10,-56,0,0" VerticalAlignment="Top"  Height="56" Width="184" Click="SearchClickUch" Style="{StaticResource ButtonStyle}"/>
+                            <Button Visibility="Hidden" x:Name="EditUch" Content="Изменить" HorizontalAlignment="Left" Margin="10,-56,0,0" VerticalAlignment="Top"  Height="56" Width="184" Click="EditClickUch" Style="{StaticResource ButtonStyle}"/>
+                            <Button Visibility="Hidden" x:Name="ClearUch" Content="Сбросить" HorizontalAlignment="Left" Margin="10,20,0,0" VerticalAlignment="Top"  Height="56" Width="184" Click="ClearClickUch" Style="{StaticResource ButtonStyle}" Cursor="Hand"/>
+                        </StackPanel>
+                        <StackPanel Visibility="Hidden" x:Name="InfoEditLabelUch">
+                            <Label Content="Имя" HorizontalAlignment="Left" Margin="210,20,0,0" VerticalAlignment="Top" Foreground="{StaticResource SeconColor1}"/>
+                            <Label Content="Фамилия" HorizontalAlignment="Left" Margin="210,20,0,0" VerticalAlignment="Top" Foreground="{StaticResource SeconColor1}"/>
+                            <Label Content="Отчество" HorizontalAlignment="Left" Margin="210,20,0,0" VerticalAlignment="Top" Foreground="{StaticResource SeconColor1}"/>
+                            <Label Content="Дата рождения" HorizontalAlignment="Left" Margin="210,20,0,0" VerticalAlignment="Top" Foreground="{StaticResource SeconColor1}"/>
+                            <Label Content="Пол" HorizontalAlignment="Left" Margin="210,20,0,0" VerticalAlignment="Top" Foreground="{StaticResource SeconColor1}"/>
+                        </StackPanel>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Расписание" Background="{StaticResource Color3}">
+                    <Grid Background="{StaticResource Color1}" Margin="0,0,0,17" Width="1272">
+                        <TextBlock x:Name="SearchLabelRaspisanie" Text="Поиск:" VerticalAlignment="Top" Margin="20,523,1197,0" Height="24" RenderTransformOrigin="0.464,0.941" Background="{DynamicResource Color1}" Foreground="{DynamicResource Color3}" FontSize="16"/>
+                        <TextBox x:Name="SearchTextBoxRaspisanie" Width="200" VerticalAlignment="Top" TextChanged="SearchTextBoxTextChangedRaspisanie" Margin="80,523,992,0" Background="{DynamicResource Color2}"/>
+                        <Button x:Name="PowerSearchRaspisanie" Content="Продвинутый поиск" HorizontalAlignment="Left" Margin="21,551,0,0" VerticalAlignment="Top" Height="27" Width="258" Style="{StaticResource ButtonStyle}" FontSize="14" Click="PowerSearchRaspisanieClick"/>
+                        <Button x:Name="EditToRaspisanie" Content="Изменить" HorizontalAlignment="Left" Margin="774,523,0,0" VerticalAlignment="Top"  Height="55" Width="240" Click="EditToClickRaspisanie" Style="{StaticResource ButtonStyle}"/>
+                        <Button x:Name="CancelRaspisanie" Content="Отменить" HorizontalAlignment="Left" Margin="1019,523,0,0" VerticalAlignment="Top"  Height="55" Width="240" Click="CancelClickRaspisanie" Style="{StaticResource ButtonStyle}" Visibility="Hidden"/>
+                        <Button x:Name="AddToRaspisanie" Content="Добавить" HorizontalAlignment="Left" Margin="529,523,0,0" VerticalAlignment="Top"  Height="55" Width="240" Click="AddToClickRaspisanie" Style="{StaticResource ButtonStyle}"/>
+                        <Button x:Name="DelToRaspisanie" Content="Удалить" HorizontalAlignment="Left" Margin="1019,523,0,0" VerticalAlignment="Top" Height="55" Width="240" Click="DeleteClickRaspisanie" Style="{StaticResource ButtonStyle}"/>
+                        <Button x:Name="PrintRaspisanie" Content="Экспорт в Excel" HorizontalAlignment="Left" Margin="284,523,0,0" VerticalAlignment="Top" Height="55" Width="240" Click="PrintClickRaspisanie" Style="{StaticResource ButtonStyle}"/>
+                        <DataGrid x:Name="расписаниеDataGridRaspisanie" AutoGenerateColumns="False" EnableRowVirtualization="True" IsReadOnly="True" RowDetailsVisibilityMode="VisibleWhenSelected" Margin="10,10,10,84" ColumnWidth="Auto" BorderThickness="3" Background="{StaticResource Color2}" SelectionMode="Extended" SelectionUnit="FullRow">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn x:Name="названиеColumnRaspisanie" Binding="{Binding Курсы.Название}" Header="Название" Width="auto"/>
+                                <DataGridTemplateColumn x:Name="датаначалаColumnRaspisanie" Header="Дата" Width="auto">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <DatePicker SelectedDate="{Binding Дата_начала, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" IsHitTestVisible="False"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTextColumn x:Name="деньнеделиColumn" Binding="{Binding День_недели}" Header="День недели" Width="auto"/>
+                                <DataGridTextColumn x:Name="времяначалаColumn" Binding="{Binding Время_начала}" Header="Время начала" Width="auto"/>
+                                <DataGridTextColumn x:Name="времяокончанияColumn" Binding="{Binding Время_окончания}" Header="Время окончания" Width="auto"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <StackPanel Visibility="Hidden" x:Name="InfoEditPanelRaspisanie">
+                            <ComboBox x:Name="NameKursRaspisanie" Height="25" Margin="10,20,1078,0" VerticalAlignment="Top" BorderBrush="{DynamicResource MaterialDesignBody}" SelectedValue="{Binding Курсы.IDКурса, Mode=TwoWay}" Background="{DynamicResource Color2}">
+                            </ComboBox>
+                            <DatePicker x:Name="DatestartRaspisanie" SelectedDate="{Binding Дата_начала, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Margin="10,20,1078,0" VerticalAlignment="Top" Height="25" BorderBrush="{DynamicResource MaterialDesignBody}" Foreground="{DynamicResource MaterialDesignBody}" Background="{DynamicResource Color2}"/>
+                            <materialDesign:TimePicker x:Name="TimestartRaspisanie" SelectedTimeChanged="TimestartRaspisanieSelectedTimeChanged" Margin="10,20,1078,0" VerticalAlignment="Top" Foreground="{StaticResource SeconColor1}" BorderBrush="{StaticResource SeconColor1}" Is24Hours="True" Background="{StaticResource Color2}"/>
+                            <materialDesign:TimePicker x:Name="TimeendRaspisanie" SelectedTimeChanged="TimeendRaspisanieSelectedTimeChanged" Margin="10,20,1078,0" VerticalAlignment="Top" Foreground="{StaticResource SeconColor1}" BorderBrush="{StaticResource SeconColor1}" Is24Hours="True" Background="{StaticResource Color2}"/>
+                            <Button Visibility="Hidden" x:Name="AddRaspisanie" Content="Добавить" HorizontalAlignment="Left" Margin="10,20,0,0" VerticalAlignment="Top"  Height="56" Width="184" Click="AddClickRaspisanie" Style="{StaticResource ButtonStyle}"/>
+                            <Button Visibility="Hidden" x:Name="SearchRaspisanie" Content="Поиск" HorizontalAlignment="Left" Margin="10,-56,0,0" VerticalAlignment="Top"  Height="56" Width="184" Click="SearchClickRaspisanie" Style="{StaticResource ButtonStyle}"/>
+                            <Button Visibility="Hidden" x:Name="EditRaspisanie" Content="Изменить" HorizontalAlignment="Left" Margin="10,-56,0,0" VerticalAlignment="Top"  Height="56" Width="184" Click="EditClickRaspisanie" Style="{StaticResource ButtonStyle}"/>
+                            <Button Visibility="Hidden" x:Name="ClearRaspisanie" Content="Сбросить" HorizontalAlignment="Left" Margin="10,20,0,0" VerticalAlignment="Top"  Height="56" Width="184" Click="ClearClickRaspisanie" Style="{StaticResource ButtonStyle}" Cursor="Hand"/>
+                        </StackPanel>
+                        <StackPanel Visibility="Hidden" x:Name="InfoEditLabelRaspisanie">
+                            <Label Content="Название курса" HorizontalAlignment="Left" Margin="210,20,0,0" VerticalAlignment="Top" Foreground="{StaticResource SeconColor1}"/>
+                            <Label Content="Дата начала" HorizontalAlignment="Left" Margin="210,20,0,0" VerticalAlignment="Top" Foreground="{StaticResource SeconColor1}"/>
+                            <Label Content="Время начала" HorizontalAlignment="Left" Margin="210,20,0,0" VerticalAlignment="Top" Foreground="{StaticResource SeconColor1}"/>
+                            <Label Content="Время окончания" HorizontalAlignment="Left" Margin="210,20,0,0" VerticalAlignment="Top" Foreground="{StaticResource SeconColor1}"/>
+                        </StackPanel>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Посещения" Background="{StaticResource Color3}">
+                    <Grid Background="{StaticResource Color1}" Margin="0,0,0,17" Width="1272">
+                        <TextBlock x:Name="SearchLabelPosesh" Text="Поиск:" VerticalAlignment="Top" Margin="20,523,1197,0" Height="24" RenderTransformOrigin="0.464,0.941" Background="{DynamicResource Color1}" Foreground="{DynamicResource Color3}" FontSize="16"/>
+                        <TextBox x:Name="SearchTextBoxPosesh" Width="200" VerticalAlignment="Top" TextChanged="SearchTextBoxTextChangedPosesh" Margin="80,523,992,0" Background="{DynamicResource Color2}"/>
+                        <Button x:Name="PowerSearchPosesh" Content="Продвинутый поиск" HorizontalAlignment="Left" Margin="21,551,0,0" VerticalAlignment="Top" Height="27" Width="258" Style="{StaticResource ButtonStyle}" FontSize="14" Click="PowerSearchPoseshClick"/>
+                        <Button x:Name="EditToPosesh" Content="Изменить" HorizontalAlignment="Left" Margin="774,523,0,0" VerticalAlignment="Top"  Height="55" Width="240" Click="EditToClickPosesh" Style="{StaticResource ButtonStyle}"/>
+                        <Button x:Name="CancelPosesh" Content="Отменить" HorizontalAlignment="Left" Margin="1019,523,0,0" VerticalAlignment="Top"  Height="55" Width="240" Click="CancelClickPosesh" Style="{StaticResource ButtonStyle}" Visibility="Hidden"/>
+                        <Button x:Name="AddToPosesh" Content="Добавить" HorizontalAlignment="Left" Margin="529,523,0,0" VerticalAlignment="Top"  Height="55" Width="240" Click="AddToClickPosesh" Style="{StaticResource ButtonStyle}"/>
+                        <Button x:Name="DelToPosesh" Content="Удалить" HorizontalAlignment="Left" Margin="1019,523,0,0" VerticalAlignment="Top" Height="55" Width="240" Click="DeleteClickPosesh" Style="{StaticResource ButtonStyle}"/>
+                        <Button x:Name="PrintPosesh" Content="Экспорт в Excel" HorizontalAlignment="Left" Margin="284,523,0,0" VerticalAlignment="Top" Height="55" Width="240" Click="PrintClickPosesh" Style="{StaticResource ButtonStyle}"/>
+                        <DataGrid x:Name="посещенияDataGridPosesh" AutoGenerateColumns="False" EnableRowVirtualization="True" IsReadOnly="True" RowDetailsVisibilityMode="VisibleWhenSelected" Margin="10,10,10,84" ColumnWidth="Auto" BorderThickness="3" Background="{StaticResource Color2}" SelectionMode="Extended" SelectionUnit="FullRow">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn x:Name="familUchColumnPosesh" Binding="{Binding Учащиеся.Фамилия}" Header="Фамилия учащегося" Width="auto"/>
+                                <DataGridTextColumn x:Name="nameCursColumnPosesh" Binding="{Binding Курсы.Название}" Header="Название курса" Width="auto"/>
+                                <DataGridTemplateColumn x:Name="датазанятияColumnRaspisanie" Header="Дата занятия" Width="auto">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <DatePicker SelectedDate="{Binding Дата_посещения, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" IsHitTestVisible="False"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTextColumn x:Name="statusColumnPosesh" Binding="{Binding Статус}" Header="Статус" Width="auto"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <StackPanel Visibility="Hidden" x:Name="InfoEditPanelPosesh">
+                            <ComboBox x:Name="FamilPosesh" Height="25" Margin="10,20,1078,0" VerticalAlignment="Top" Foreground="{DynamicResource MaterialDesignBody}" Background="{DynamicResource Color2}"/>
+                            <ComboBox x:Name="NameCursPosesh" Height="25" Margin="10,20,1078,0" VerticalAlignment="Top" Foreground="{DynamicResource MaterialDesignBody}" Background="{DynamicResource Color2}"/>
+                            <DatePicker x:Name="DatePosesh" SelectedDate="{Binding Дата_посещения, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Margin="10,20,1078,0" VerticalAlignment="Top" Height="25" BorderBrush="{DynamicResource MaterialDesignBody}" Foreground="{DynamicResource MaterialDesignBody}" Background="{DynamicResource Color2}"/>
+                            <ComboBox x:Name="StatusPosesh" Height="25" Margin="10,20,1078,0" VerticalAlignment="Top" Foreground="{DynamicResource MaterialDesignBody}" Background="{DynamicResource Color2}">
+                                <ComboBoxItem>Присутствовал(а)</ComboBoxItem>
+                                <ComboBoxItem>Отсутствовал(а)</ComboBoxItem>
+                            </ComboBox>
+                            <Button Visibility="Hidden" x:Name="AddPosesh" Content="Добавить" HorizontalAlignment="Left" Margin="10,20,0,0" VerticalAlignment="Top"  Height="56" Width="184" Click="AddClickPosesh" Style="{StaticResource ButtonStyle}"/>
+                            <Button Visibility="Hidden" x:Name="SearchPosesh" Content="Поиск" HorizontalAlignment="Left" Margin="10,-56,0,0" VerticalAlignment="Top"  Height="56" Width="184" Click="SearchClickPosesh" Style="{StaticResource ButtonStyle}"/>
+                            <Button Visibility="Hidden" x:Name="EditPosesh" Content="Изменить" HorizontalAlignment="Left" Margin="10,-56,0,0" VerticalAlignment="Top"  Height="56" Width="184" Click="EditClickPosesh" Style="{StaticResource ButtonStyle}"/>
+                            <Button Visibility="Hidden" x:Name="ClearPosesh" Content="Сбросить" HorizontalAlignment="Left" Margin="10,20,0,0" VerticalAlignment="Top"  Height="56" Width="184" Click="ClearClickPosesh" Style="{StaticResource ButtonStyle}" Cursor="Hand"/>
+                        </StackPanel>
+                        <StackPanel Visibility="Hidden" x:Name="InfoEditLabelPosesh">
+                            <Label Content="Фамилия учащегося" HorizontalAlignment="Left" Margin="210,20,0,0" VerticalAlignment="Top" Foreground="{StaticResource SeconColor1}"/>
+                            <Label Content="Название курса" HorizontalAlignment="Left" Margin="210,20,0,0" VerticalAlignment="Top" Foreground="{StaticResource SeconColor1}"/>
+                            <Label Content="Дата занятия" HorizontalAlignment="Left" Margin="210,20,0,0" VerticalAlignment="Top" Foreground="{StaticResource SeconColor1}"/>
+                            <Label Content="Статус" HorizontalAlignment="Left" Margin="210,20,0,0" VerticalAlignment="Top" Foreground="{StaticResource SeconColor1}"/>
+                        </StackPanel>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Итоговые работы" Background="{StaticResource Color3}">
+                    <Grid Background="{StaticResource Color1}" Margin="0,0,0,17" Width="1272">
+                        <TextBlock x:Name="SearchLabelItog" Text="Поиск:" VerticalAlignment="Top" Margin="20,523,1197,0" Height="24" RenderTransformOrigin="0.464,0.941" Background="{DynamicResource Color1}" Foreground="{DynamicResource Color3}" FontSize="16"/>
+                        <TextBox x:Name="SearchTextBoxItog" Width="200" VerticalAlignment="Top" TextChanged="SearchTextBoxTextChangedItog" Margin="80,523,992,0" Background="{DynamicResource Color2}"/>
+                        <Button x:Name="PowerSearchItog" Content="Продвинутый поиск" HorizontalAlignment="Left" Margin="21,551,0,0" VerticalAlignment="Top" Height="27" Width="258" Style="{StaticResource ButtonStyle}" FontSize="14" Click="PowerSearchItogClick"/>
+                        <Button x:Name="EditToItog" Content="Изменить" HorizontalAlignment="Left" Margin="774,523,0,0" VerticalAlignment="Top"  Height="55" Width="240" Click="EditToClickItog" Style="{StaticResource ButtonStyle}"/>
+                        <Button x:Name="CancelItog" Content="Отменить" HorizontalAlignment="Left" Margin="1019,523,0,0" VerticalAlignment="Top"  Height="55" Width="240" Click="CancelClickItog" Style="{StaticResource ButtonStyle}" Visibility="Hidden"/>
+                        <Button x:Name="AddToItog" Content="Добавить" HorizontalAlignment="Left" Margin="529,523,0,0" VerticalAlignment="Top"  Height="55" Width="240" Click="AddToClickItog" Style="{StaticResource ButtonStyle}"/>
+                        <Button x:Name="DelToItog" Content="Удалить" HorizontalAlignment="Left" Margin="1019,523,0,0" VerticalAlignment="Top" Height="55" Width="240" Click="DeleteClickItog" Style="{StaticResource ButtonStyle}"/>
+                        <Button x:Name="PrintItog" Content="Экспорт в Excel" HorizontalAlignment="Left" Margin="284,523,0,0" VerticalAlignment="Top" Height="55" Width="240" Click="PrintClickItog" Style="{StaticResource ButtonStyle}"/>
+                        <DataGrid x:Name="ИтоговыеРаботыDataGridItog" AutoGenerateColumns="False" EnableRowVirtualization="True" IsReadOnly="True" RowDetailsVisibilityMode="VisibleWhenSelected" Margin="10,10,10,84" ColumnWidth="Auto" BorderThickness="3" Background="{StaticResource Color2}" SelectionMode="Extended" SelectionUnit="FullRow">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn x:Name="FamilColumnItog" Header="Фамилия Учащегося" Binding="{Binding Учащиеся.Фамилия}" Width="auto"/>
+                                <DataGridTextColumn x:Name="NameCursColumnItog" Header="Название Курса" Binding="{Binding Курсы.Название}" Width="auto"/>
+                                <DataGridTextColumn x:Name="NameItogRabColumnItog" Header="Название итоговой работы" Binding="{Binding Название}" Width="auto"/>
+                                <DataGridTextColumn x:Name="DescColumnItog" Header="Описание" Binding="{Binding Описание}" Width="auto"/>
+                                <DataGridTextColumn x:Name="OcenkaColumnItog" Header="Оценка" Binding="{Binding Оценка}" Width="auto"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <StackPanel Visibility="Hidden" x:Name="InfoEditPanelItog">
+                            <ComboBox x:Name="FamilItog" Height="25" Margin="10,20,1078,0" VerticalAlignment="Top" Foreground="{DynamicResource MaterialDesignBody}" Background="{DynamicResource Color2}"/>
+                            <ComboBox x:Name="NameCursItog" Height="25" Margin="10,20,1078,0" VerticalAlignment="Top" Foreground="{DynamicResource MaterialDesignBody}" Background="{DynamicResource Color2}"/>
+                            <TextBox x:Name="NameItogRabItog" Text="{Binding Название, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Height="25" Margin="10,20,1078,0" VerticalAlignment="Top" BorderBrush="{DynamicResource MaterialDesignBody}" Foreground="{DynamicResource MaterialDesignBody}" Background="{DynamicResource Color2}"/>
+                            <TextBox x:Name="DescItog" Text="{Binding Фамилия, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Height="25" Margin="10,20,1078,0" VerticalAlignment="Top" BorderBrush="{DynamicResource MaterialDesignBody}" Foreground="{DynamicResource MaterialDesignBody}" Background="{DynamicResource Color2}"/>
+                            <ComboBox x:Name="OcenkaItog" Height="25" Margin="10,20,1078,0" VerticalAlignment="Top" Foreground="{DynamicResource MaterialDesignBody}" Background="{DynamicResource Color2}">
+                                <ComboBoxItem>2</ComboBoxItem>
+                                <ComboBoxItem>3</ComboBoxItem>
+                                <ComboBoxItem>4</ComboBoxItem>
+                                <ComboBoxItem>5</ComboBoxItem>
+                            </ComboBox>
+                            <Button Visibility="Hidden" x:Name="AddItog" Content="Добавить" HorizontalAlignment="Left" Margin="10,20,0,0" VerticalAlignment="Top"  Height="56" Width="184" Click="AddClickItog" Style="{StaticResource ButtonStyle}"/>
+                            <Button Visibility="Hidden" x:Name="SearchItog" Content="Поиск" HorizontalAlignment="Left" Margin="10,-56,0,0" VerticalAlignment="Top"  Height="56" Width="184" Click="SearchClickItog" Style="{StaticResource ButtonStyle}"/>
+                            <Button Visibility="Hidden" x:Name="EditItog" Content="Изменить" HorizontalAlignment="Left" Margin="10,-56,0,0" VerticalAlignment="Top"  Height="56" Width="184" Click="EditClickItog" Style="{StaticResource ButtonStyle}"/>
+                            <Button Visibility="Hidden" x:Name="ClearItog" Content="Сбросить" HorizontalAlignment="Left" Margin="10,20,0,0" VerticalAlignment="Top"  Height="56" Width="184" Click="ClearClickItog" Style="{StaticResource ButtonStyle}" Cursor="Hand"/>
+                        </StackPanel>
+                        <StackPanel Visibility="Hidden" x:Name="InfoEditLabelItog">
+                            <Label Content="Фамилия Учащегося" HorizontalAlignment="Left" Margin="210,20,0,0" VerticalAlignment="Top" Foreground="{StaticResource SeconColor1}"/>
+                            <Label Content="Название Курса" HorizontalAlignment="Left" Margin="210,20,0,0" VerticalAlignment="Top" Foreground="{StaticResource SeconColor1}"/>
+                            <Label Content="Название итоговой работы" HorizontalAlignment="Left" Margin="210,20,0,0" VerticalAlignment="Top" Foreground="{StaticResource SeconColor1}"/>
+                            <Label Content="Описание" HorizontalAlignment="Left" Margin="210,20,0,0" VerticalAlignment="Top" Foreground="{StaticResource SeconColor1}"/>
+                            <Label Content="Оценка" HorizontalAlignment="Left" Margin="210,20,0,0" VerticalAlignment="Top" Foreground="{StaticResource SeconColor1}"/>
+                        </StackPanel>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Доступ" Background="{StaticResource Color3}">
+                    <Grid Background="{StaticResource Color1}" Margin="0,0,0,17" Width="1272">
+                        <TextBlock x:Name="SearchLabelDost" Text="Поиск:" VerticalAlignment="Top" Margin="20,523,1197,0" Height="24" RenderTransformOrigin="0.464,0.941" Background="{DynamicResource Color1}" Foreground="{DynamicResource Color3}" FontSize="16"/>
+                        <TextBox x:Name="SearchTextBoxDost" Width="200" VerticalAlignment="Top" TextChanged="SearchTextBoxTextChangedDost" Margin="80,523,992,0" Background="{DynamicResource Color2}"/>
+                        <Button x:Name="PowerSearchDost" Content="Продвинутый поиск" HorizontalAlignment="Left" Margin="21,551,0,0" VerticalAlignment="Top" Height="27" Width="258" Style="{StaticResource ButtonStyle}" FontSize="14" Click="PowerSearchDostClick"/>
+                        <Button x:Name="EditToDost" Content="Изменить" HorizontalAlignment="Left" Margin="774,523,0,0" VerticalAlignment="Top"  Height="55" Width="240" Click="EditToClickDost" Style="{StaticResource ButtonStyle}"/>
+                        <Button x:Name="CancelDost" Content="Отменить" HorizontalAlignment="Left" Margin="1019,523,0,0" VerticalAlignment="Top"  Height="55" Width="240" Click="CancelClickDost" Style="{StaticResource ButtonStyle}" Visibility="Hidden"/>
+                        <Button x:Name="AddToDost" Content="Добавить" HorizontalAlignment="Left" Margin="529,523,0,0" VerticalAlignment="Top"  Height="55" Width="240" Click="AddToClickDost" Style="{StaticResource ButtonStyle}"/>
+                        <Button x:Name="DelToDost" Content="Удалить" HorizontalAlignment="Left" Margin="1019,523,0,0" VerticalAlignment="Top" Height="55" Width="240" Click="DeleteClickDost" Style="{StaticResource ButtonStyle}"/>
+                        <Button x:Name="PrintDost" Content="Экспорт в Excel" HorizontalAlignment="Left" Margin="284,523,0,0" VerticalAlignment="Top" Height="55" Width="240" Click="PrintClickDost" Style="{StaticResource ButtonStyle}"/>
+                        <DataGrid x:Name="доступDataGridDost" AutoGenerateColumns="False" EnableRowVirtualization="True" IsReadOnly="True" RowDetailsVisibilityMode="VisibleWhenSelected" Margin="7,10,13,84" ColumnWidth="Auto" BorderThickness="3" Background="{StaticResource Color2}" SelectionMode="Extended" SelectionUnit="FullRow">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn x:Name="loginColumnDost" Binding="{Binding Регистрация.Логин}" Header="Логин" Width="auto"/>
+                                <DataGridTextColumn x:Name="passwordColumnDost" Binding="{Binding Регистрация.Пароль}" Header="Пароль (Для проверки)" Width="auto"/>
+                                <DataGridTextColumn x:Name="courseColumnDost" Binding="{Binding Курсы.Название}" Header="Название курса" Width="auto"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <StackPanel Visibility="Hidden" x:Name="InfoEditPanelDost">
+                            <ComboBox x:Name="LoginDost" Height="25" Margin="10,20,1078,0" VerticalAlignment="Top" Foreground="{DynamicResource MaterialDesignBody}" Background="{DynamicResource Color2}"/>
+                            <ComboBox x:Name="CourseDost" Height="25" Margin="10,20,1078,0" VerticalAlignment="Top" Foreground="{DynamicResource MaterialDesignBody}" Background="{DynamicResource Color2}"/>
+                            <Button Visibility="Hidden" x:Name="AddDost" Content="Добавить" HorizontalAlignment="Left" Margin="10,20,0,0" VerticalAlignment="Top"  Height="56" Width="184" Click="AddClickDost" Style="{StaticResource ButtonStyle}"/>
+                            <Button Visibility="Hidden" x:Name="SearchDost" Content="Поиск" HorizontalAlignment="Left" Margin="10,-56,0,0" VerticalAlignment="Top"  Height="56" Width="184" Click="SearchClickDost" Style="{StaticResource ButtonStyle}"/>
+                            <Button Visibility="Hidden" x:Name="EditDost" Content="Изменить" HorizontalAlignment="Left" Margin="10,-56,0,0" VerticalAlignment="Top"  Height="56" Width="184" Click="EditClickDost" Style="{StaticResource ButtonStyle}"/>
+                            <Button Visibility="Hidden" x:Name="ClearDost" Content="Сбросить" HorizontalAlignment="Left" Margin="10,20,0,0" VerticalAlignment="Top"  Height="56" Width="184" Click="ClearClickDost" Style="{StaticResource ButtonStyle}" Cursor="Hand"/>
+                        </StackPanel>
+                        <StackPanel Visibility="Hidden" x:Name="InfoEditLabelDost">
+                            <Label Content="Логин" HorizontalAlignment="Left" Margin="210,20,0,0" VerticalAlignment="Top" Foreground="{StaticResource SeconColor1}"/>
+                            <Label Content="Название курса" HorizontalAlignment="Left" Margin="210,20,0,0" VerticalAlignment="Top" Foreground="{StaticResource SeconColor1}"/>
+                        </StackPanel>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Пользователи" Background="{StaticResource Color3}">
+                    <Grid Background="{StaticResource Color1}" Margin="0,0,0,17" Width="1272">
+                        <TextBlock x:Name="SearchLabelPolzov" Text="Поиск:" VerticalAlignment="Top" Margin="20,523,1197,0" Height="24" RenderTransformOrigin="0.464,0.941" Background="{DynamicResource Color1}" Foreground="{DynamicResource Color3}" FontSize="16"/>
+                        <TextBox x:Name="SearchTextBoxPolzov" Width="200" VerticalAlignment="Top" TextChanged="SearchTextBoxTextChangedPolzov" Margin="80,523,992,0" Background="{DynamicResource Color2}"/>
+                        <Button x:Name="PowerSearchPolzov" Content="Продвинутый поиск" HorizontalAlignment="Left" Margin="21,551,0,0" VerticalAlignment="Top" Height="27" Width="258" Style="{StaticResource ButtonStyle}" FontSize="14" Click="PowerSearchPolzovClick"/>
+                        <Button x:Name="EditToPolzov" Content="Изменить" HorizontalAlignment="Left" Margin="774,523,0,0" VerticalAlignment="Top"  Height="55" Width="240" Click="EditToClickPolzov" Style="{StaticResource ButtonStyle}"/>
+                        <Button x:Name="CancelPolzov" Content="Отменить" HorizontalAlignment="Left" Margin="1019,523,0,0" VerticalAlignment="Top"  Height="55" Width="240" Click="CancelClickPolzov" Style="{StaticResource ButtonStyle}" Visibility="Hidden"/>
+                        <Button x:Name="AddToPolzov" Content="Добавить" HorizontalAlignment="Left" Margin="529,523,0,0" VerticalAlignment="Top"  Height="55" Width="240" Click="AddToClickPolzov" Style="{StaticResource ButtonStyle}"/>
+                        <Button x:Name="DelToPolzov" Content="Удалить" HorizontalAlignment="Left" Margin="1019,523,0,0" VerticalAlignment="Top" Height="55" Width="240" Click="DeleteClickPolzov" Style="{StaticResource ButtonStyle}"/>
+                        <Button x:Name="PrintPolzov" Content="Экспорт в Excel" HorizontalAlignment="Left" Margin="284,523,0,0" VerticalAlignment="Top" Height="55" Width="240" Click="PrintClickPolzov" Style="{StaticResource ButtonStyle}"/>
+                        <DataGrid x:Name="регистрацияDataGridPolzov" AutoGenerateColumns="False" EnableRowVirtualization="True" IsReadOnly="True" RowDetailsVisibilityMode="VisibleWhenSelected" Margin="10,10,10,84" ColumnWidth="Auto" BorderThickness="3" Background="{StaticResource Color2}" SelectionMode="Extended" SelectionUnit="FullRow">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn x:Name="loginColumnPolzov" Binding="{Binding Логин}" Header="Логин" Width="auto"/>
+                                <DataGridTextColumn x:Name="passwordColumnPolzov" Binding="{Binding Пароль}" Header="Пароль" Width="auto"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <StackPanel Visibility="Hidden" x:Name="InfoEditPanelPolzov">
+                            <TextBox x:Name="LoginPolzov" Text="{Binding Логин, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Height="25" Margin="10,20,1078,0" VerticalAlignment="Top" BorderBrush="{DynamicResource MaterialDesignBody}" Foreground="{DynamicResource MaterialDesignBody}" Background="{DynamicResource Color2}"/>
+                            <TextBox x:Name="PassPolzov" Text="{Binding Пароль, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Height="25" Margin="10,20,1078,0" VerticalAlignment="Top" BorderBrush="{DynamicResource MaterialDesignBody}" Foreground="{DynamicResource MaterialDesignBody}" Background="{DynamicResource Color2}"/>
+                            <Button Visibility="Hidden" x:Name="AddPolzov" Content="Добавить" HorizontalAlignment="Left" Margin="10,20,0,0" VerticalAlignment="Top"  Height="56" Width="184" Click="AddClickPolzov" Style="{StaticResource ButtonStyle}"/>
+                            <Button Visibility="Hidden" x:Name="SearchPolzov" Content="Поиск" HorizontalAlignment="Left" Margin="10,-56,0,0" VerticalAlignment="Top"  Height="56" Width="184" Click="SearchClickPolzov" Style="{StaticResource ButtonStyle}"/>
+                            <Button Visibility="Hidden" x:Name="EditPolzov" Content="Изменить" HorizontalAlignment="Left" Margin="10,-56,0,0" VerticalAlignment="Top"  Height="56" Width="184" Click="EditClickPolzov" Style="{StaticResource ButtonStyle}"/>
+                            <Button Visibility="Hidden" x:Name="ClearPolzov" Content="Сбросить" HorizontalAlignment="Left" Margin="10,20,0,0" VerticalAlignment="Top"  Height="56" Width="184" Click="ClearClickPolzov" Style="{StaticResource ButtonStyle}" Cursor="Hand"/>
+                        </StackPanel>
+                        <StackPanel Visibility="Hidden" x:Name="InfoEditLabelPolzov">
+                            <Label Content="Логин" HorizontalAlignment="Left" Margin="210,20,0,0" VerticalAlignment="Top" Foreground="{StaticResource SeconColor1}"/>
+                            <Label Content="Пароль" HorizontalAlignment="Left" Margin="210,20,0,0" VerticalAlignment="Top" Foreground="{StaticResource SeconColor1}"/>
+                        </StackPanel>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Курсы учащихся" Background="{StaticResource Color3}">
+                    <Grid Background="{StaticResource Color1}" Margin="0,0,0,17" Width="1272">
+                        <TextBlock x:Name="SearchLabelUchKursi" Text="Поиск:" VerticalAlignment="Top" Margin="20,523,1197,0" Height="24" RenderTransformOrigin="0.464,0.941" Background="{DynamicResource Color1}" Foreground="{DynamicResource Color3}" FontSize="16"/>
+                        <TextBox x:Name="SearchTextBoxUchKursi" Width="200" VerticalAlignment="Top" TextChanged="SearchTextBoxTextChangedUchKursi" Margin="80,523,992,0" Background="{DynamicResource Color2}"/>
+                        <Button x:Name="PowerSearchUchKursi" Content="Продвинутый поиск" HorizontalAlignment="Left" Margin="21,551,0,0" VerticalAlignment="Top" Height="27" Width="258" Style="{StaticResource ButtonStyle}" FontSize="14" Click="PowerSearchUchKursiClick"/>
+                        <Button x:Name="EditToUchKursi" Content="Изменить" HorizontalAlignment="Left" Margin="774,523,0,0" VerticalAlignment="Top"  Height="55" Width="240" Click="EditToClickUchKursi" Style="{StaticResource ButtonStyle}"/>
+                        <Button x:Name="CancelUchKursi" Content="Отменить" HorizontalAlignment="Left" Margin="1019,523,0,0" VerticalAlignment="Top"  Height="55" Width="240" Click="CancelClickUchKursi" Style="{StaticResource ButtonStyle}" Visibility="Hidden"/>
+                        <Button x:Name="AddToUchKursi" Content="Добавить" HorizontalAlignment="Left" Margin="529,523,0,0" VerticalAlignment="Top"  Height="55" Width="240" Click="AddToClickUchKursi" Style="{StaticResource ButtonStyle}"/>
+                        <Button x:Name="DelToUchKursi" Content="Удалить" HorizontalAlignment="Left" Margin="1019,523,0,0" VerticalAlignment="Top" Height="55" Width="240" Click="DeleteClickUchKursi" Style="{StaticResource ButtonStyle}"/>
+                        <Button x:Name="PrintUchKursi" Content="Экспорт в Excel" HorizontalAlignment="Left" Margin="284,523,0,0" VerticalAlignment="Top" Height="55" Width="240" Click="PrintClickUchKursi" Style="{StaticResource ButtonStyle}"/>
+                        <DataGrid x:Name="учащиесякурсыDataGridUchKursi" AutoGenerateColumns="False" EnableRowVirtualization="True" IsReadOnly="True" RowDetailsVisibilityMode="VisibleWhenSelected" Margin="7,10,13,84" ColumnWidth="Auto" BorderThickness="3" Background="{StaticResource Color2}" SelectionMode="Extended" SelectionUnit="FullRow">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn x:Name="NameUchColumnUchKursi" Binding="{Binding Учащиеся.Имя}" Header="Имя" Width="auto"/>
+                                <DataGridTextColumn x:Name="FamilUchColumnUchKursi" Binding="{Binding Учащиеся.Фамилия}" Header="Фамилия" Width="auto"/>
+                                <DataGridTextColumn x:Name="OtchUchColumnUchKursi" Binding="{Binding Учащиеся.Отчество}" Header="Отчество" Width="auto"/>
+                                <DataGridTextColumn x:Name="courseColumnUchKursi" Binding="{Binding Курсы.Название}" Header="Название курса" Width="auto"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <StackPanel Visibility="Hidden" x:Name="InfoEditPanelUchKursi">
+                            <ComboBox x:Name="NameUchUchKursi" Height="25" Margin="10,20,1078,0" VerticalAlignment="Top" Foreground="{DynamicResource MaterialDesignBody}" Background="{DynamicResource Color2}"/>
+                            <ComboBox x:Name="CourseUchKursi" Height="25" Margin="10,20,1078,0" VerticalAlignment="Top" Foreground="{DynamicResource MaterialDesignBody}" Background="{DynamicResource Color2}"/>
+                            <Button Visibility="Hidden" x:Name="AddUchKursi" Content="Добавить" HorizontalAlignment="Left" Margin="10,20,0,0" VerticalAlignment="Top"  Height="56" Width="184" Click="AddClickUchKursi" Style="{StaticResource ButtonStyle}"/>
+                            <Button Visibility="Hidden" x:Name="SearchUchKursi" Content="Поиск" HorizontalAlignment="Left" Margin="10,-56,0,0" VerticalAlignment="Top"  Height="56" Width="184" Click="SearchClickUchKursi" Style="{StaticResource ButtonStyle}"/>
+                            <Button Visibility="Hidden" x:Name="EditUchKursi" Content="Изменить" HorizontalAlignment="Left" Margin="10,-56,0,0" VerticalAlignment="Top"  Height="56" Width="184" Click="EditClickUchKursi" Style="{StaticResource ButtonStyle}"/>
+                            <Button Visibility="Hidden" x:Name="ClearUchKursi" Content="Сбросить" HorizontalAlignment="Left" Margin="10,20,0,0" VerticalAlignment="Top"  Height="56" Width="184" Click="ClearClickUchKursi" Style="{StaticResource ButtonStyle}" Cursor="Hand"/>
+                        </StackPanel>
+                        <StackPanel Visibility="Hidden" x:Name="InfoEditLabelUchKursi">
+                            <Label Content="Фамилия" HorizontalAlignment="Left" Margin="210,20,0,0" VerticalAlignment="Top" Foreground="{StaticResource SeconColor1}"/>
+                            <Label Content="Название курса" HorizontalAlignment="Left" Margin="210,20,0,0" VerticalAlignment="Top" Foreground="{StaticResource SeconColor1}"/>
+                        </StackPanel>
+                    </Grid>
+                </TabItem>
+            </TabControl>
+            <Rectangle x:Name="Separator" Height="3" Fill="{StaticResource Color2}" Margin="0,40,0,0" VerticalAlignment="Top"/>
+            <Label x:Name="LoginInfoMenu" Content="Меню" HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top" Foreground="{StaticResource Color3}" FontSize="15"/>
+            <Button Content="Выйти из аккаунта" HorizontalAlignment="Left" Margin="682,4,0,0" VerticalAlignment="Top" Click="ExitAccClick" Height="30" Width="164" Foreground="{StaticResource Color3}" Background="{StaticResource Color2}" BorderBrush="{StaticResource Color5}" />
+            <Label x:Name="LoginInfo" Content="Добро пожаловать, &#xD;&#xA;" HorizontalAlignment="Left" Margin="437,5,0,0" VerticalAlignment="Top" Foreground="{StaticResource Color3}" FontSize="15" Width="240" Height="30"/>
+            <Button Content="Обновить таблицы" HorizontalAlignment="Left" Margin="65,5,0,0" VerticalAlignment="Top" Click="UpdateClick" Height="30" Width="164" Foreground="{StaticResource Color3}" Background="{StaticResource Color2}" BorderBrush="{StaticResource Color5}" />
+        </Grid>
+    </Border>
+</Window>
