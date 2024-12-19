@@ -1,1 +1,2 @@
 # DiplomCollege
+My diploma project
